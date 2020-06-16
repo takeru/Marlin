@@ -127,26 +127,35 @@
   #define NO_LCD_REINIT                           // Suppress LCD re-initialization
 
   #define LCD_BACKLIGHT_PIN                 PD13
+#endif
 
   #if ENABLED(TOUCH_BUTTONS)
-    #define TOUCH_CS_PIN                    PC2
-    #define TOUCH_SCK_PIN                   PB13
-    #define TOUCH_MOSI_PIN                  PB15
-    #define TOUCH_MISO_PIN                  PB14
-  #endif
+    #define TOUCH_CS_PIN PC2
+    #define TOUCH_SCK_PIN PB13 // pin 52
+    #define TOUCH_MOSI_PIN PB15 //PB14 // pin 53
+    #define TOUCH_MISO_PIN PB14 //PB15 // pin 54
+
+    #define LCD_USE_DMA_FSMC // Use DMA transfers to send data to the TFT
+    #define FSMC_DMA_DEV DMA2
+    #define FSMC_DMA_CHANNEL DMA_CH5
+    #define BTN_EN1 -1 // Real pin is needed to enable encoder's push button
+    #define BTN_EN2 -1 // functionality used by touch screen
+
+    #define DOGLCD_MOSI -1 // Prevent auto-define by Conditionals_post.h
+    #define DOGLCD_SCK -1
 #endif
 
 // Motor current PWM pins
-#define MOTOR_CURRENT_PWM_XY_PIN            PA6
-#define MOTOR_CURRENT_PWM_Z_PIN             PA7
-#define MOTOR_CURRENT_PWM_E_PIN             PB0
-#define MOTOR_CURRENT_PWM_RANGE 1500              // (255 * (1000mA / 65535)) * 257 = 1000 is equal 1.6v Vref in turn equal 1Amp
-#define DEFAULT_PWM_MOTOR_CURRENT  { 1030, 1030, 1030 } // 1.05Amp per driver, here is XY, Z and E. This values determined empirically.
+#define MOTOR_CURRENT_PWM_XY_PIN PA6
+#define MOTOR_CURRENT_PWM_Z_PIN  PA7
+#define MOTOR_CURRENT_PWM_E_PIN  PB0
+#define MOTOR_CURRENT_PWM_RANGE  1500                    // (255 * (1000mA / 65535)) * 257 = 1000 is equal 1.6v Vref in turn equal 1Amp
+#define DEFAULT_PWM_MOTOR_CURRENT  { 1000, 1000, 1000 } // 1.05Amp per driver, here is XY, Z and E. This values determined empirically.
 
 // This is a kind of workaround in case native marlin "digipot" interface won't work.
 // Required to enable related code in STM32F1/HAL.cpp
 //#ifndef MKS_ROBIN_MINI_VREF_PWM
-//  #define MKS_ROBIN_MINI_VREF_PWM
+//#define MKS_ROBIN_MINI_VREF_PWM
 //#endif
 
 //#define VREF_XY_PIN                       PA6
