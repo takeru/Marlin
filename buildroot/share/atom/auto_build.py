@@ -46,7 +46,7 @@
 #
 # General program flow
 #
-#  1. Scans Configuration.h for the motherboard name and Marlin version.
+#  1. Scans Configuration_backend.h for the motherboard name and Marlin version.
 #  2. Scans pins.h for the motherboard.
 #       returns the CPU(s) and platformio environment(s) used by the motherboard
 #  3. If further info is needed then a popup gets it from the user.
@@ -436,21 +436,21 @@ def get_build_last():
   return env_last
 
 
-# Get the board being built from the Configuration.h file
+# Get the board being built from the Configuration_backend.h file
 #   return: board name, major version of Marlin being used (1 or 2)
 def get_board_name():
   board_name = ''
   # get board name
 
-  with open('Marlin/Configuration.h', 'r') as myfile:
-    Configuration_h = myfile.read()
+  with open('Marlin/Configuration_backend.h', 'r') as myfile:
+    Configuration_backend_h = myfile.read()
 
-  Configuration_h = Configuration_h.split('\n')
+  Configuration_backend_h = Configuration_backend_h.split('\n')
   Marlin_ver = 0  # set version to invalid number
-  for lines in Configuration_h:
-    if 0 == lines.find('#define CONFIGURATION_H_VERSION 01'):
+  for lines in Configuration_backend_h:
+    if 0 == lines.find('#define CONFIGURATION_BACKEND_H_VERSION 01'):
       Marlin_ver = 1
-    if 0 == lines.find('#define CONFIGURATION_H_VERSION 02'):
+    if 0 == lines.find('#define CONFIGURATION_BACKEND_H_VERSION 02'):
       Marlin_ver = 2
     board = lines.find(' BOARD_') + 1
     motherboard = lines.find(' MOTHERBOARD ') + 1
@@ -941,7 +941,7 @@ def run_PIO(dummy):
       ['platformio', 'test', 'upload', '-e', target_env], stdout=subprocess.PIPE, stderr=subprocess.STDOUT
     )
 
-  elif build_type == 'remote':
+  elif buildo_type == 'remote':
     # platformio remote run --target upload -e  target_env
     # combine stdout & stderr so all compile messages are included
     pio_subprocess = subprocess.Popen(
